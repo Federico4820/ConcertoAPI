@@ -19,7 +19,7 @@ namespace ConcertoAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("miei")]
         public async Task<ActionResult<IEnumerable<Biglietto>>> GetBigliettiUtente()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -34,6 +34,7 @@ namespace ConcertoAPI.Controllers
         public async Task<ActionResult<Biglietto>> AcquistaBiglietto([FromBody] AcquistoBigliettoDto dto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var claims = User.Claims.Select(c => $"{c.Type}: {c.Value}").ToList();
             if (userId == null) return Unauthorized();
 
             var biglietto = await _bigliettoService.AcquistaBigliettoAsync(dto.EventoId, userId);

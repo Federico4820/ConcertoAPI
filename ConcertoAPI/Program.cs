@@ -37,6 +37,13 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+    //PER IGNORARE I CICLI
+    builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
 
 

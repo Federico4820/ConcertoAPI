@@ -35,25 +35,21 @@ namespace ConcertoAPI.Controllers
         {
             var newUser = new ApplicationUser()
             {
-                Email = registerRequestDto.Email, // Imposta l'email dell'utente
-                UserName = registerRequestDto.Email, // Imposta il nome utente uguale all'email
-                FirstName = registerRequestDto.FirstName, // Imposta il nome dell'utente
-                LastName = registerRequestDto.LastName, // Imposta il cognome dell'utente
+                Email = registerRequestDto.Email,
+                UserName = registerRequestDto.Email,
+                FirstName = registerRequestDto.FirstName,
+                LastName = registerRequestDto.LastName,
             };
 
-            // Crea l'utente nel database con la password specificata
             var result = await _userManager.CreateAsync(newUser, registerRequestDto.Password);
 
-            // Se la creazione dell'utente non ha avuto successo, reindirizza alla pagina dei prodotti
             if (!result.Succeeded)
             {
                 return BadRequest();
             }
 
-            // Trova l'utente appena creato in base alla sua email
             var user = await _userManager.FindByEmailAsync(newUser.Email);
 
-            // Aggiunge l'utente al ruolo "User"
             await _userManager.AddToRoleAsync(newUser, "Amministratore");
 
             return Ok();
@@ -81,6 +77,7 @@ namespace ConcertoAPI.Controllers
             List<Claim> claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
             claims.Add(new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"));
             foreach (var role in roles)
             {

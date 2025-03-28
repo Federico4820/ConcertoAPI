@@ -17,7 +17,7 @@ namespace ConcertoAPI.Models
         public Guid ArtistaId { get; set; }
 
         [ForeignKey("ArtistaId")]
-        public Artista Artista { get; set; }
-        public ICollection<Biglietto> Biglietti { get; set; }
+        public Artista? Artista { get; set; }
+        public ICollection<Biglietto>? Biglietti { get; set; }
     }
 }

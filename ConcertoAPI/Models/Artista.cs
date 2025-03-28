@@ -15,6 +15,6 @@ namespace ConcertoAPI.Models
         [Required]
         [StringLength(200)]
         public required string Biografia { get; set; }
-        public ICollection<Evento> Eventi { get; set; }
+        public ICollection<Evento>? Eventi { get; set; }
     }
 }
